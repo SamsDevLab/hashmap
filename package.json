@@ -1,0 +1,13 @@
+{
+  "name": "linked-lists",
+  "version": "1.0.1",
+  "description": "Linked List exercises using ES6 modules",
+  "main": "main.js",
+  "type": "module",
+  "scripts": {
+    "start": "node main.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
