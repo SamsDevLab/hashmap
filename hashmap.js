@@ -112,19 +112,48 @@ export class HashMap {
 
   /********************/
 
-  /*
-  • Hash key then pass key and hash into 'findKey'
-  • Set 'findKey' to 'current' variable
-  • If current !== null, return true (meaning key is in the hash map)
-  • if current === null, return false (meaning key is NOT in the hash map)
-  */
-
   has(key) {
     const currentHash = this.hash(key);
     const currentNode = this.findKey(key, currentHash);
 
     if (currentNode !== null) return true;
     else return false;
+  }
+
+  /********************/
+
+  remove(key) {
+    const currentHash = this.hash(key);
+    let targetBucket = this.bucket[currentHash - 1];
+    if (targetBucket === undefined) return false;
+
+    let current = targetBucket.head;
+    let prev = null;
+
+    while (current !== null && current.key !== key) {
+      prev = current;
+      current = current.nextNode;
+    }
+
+    if (current === null) {
+      return false;
+    } else if (prev === null && current.nextNode === null) {
+      current = prev;
+      this.bucket[currentHash - 1] = undefined;
+      return true;
+    } else if (prev === null && current.nextNode !== null) {
+      current = current.nextNode;
+      targetBucket.head = current;
+      return true;
+    } else if (prev !== null && current.nextNode !== null) {
+      prev.nextNode = current.nextNode;
+      current = null;
+      return true;
+    } else if (prev !== null && current.nextNode === null) {
+      prev.nextNode = current.nextNode;
+      targetBucket.tail = prev;
+      return true;
+    }
   }
 }
 
