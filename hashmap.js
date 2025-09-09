@@ -4,7 +4,7 @@ export class HashMap {
   constructor() {
     this.loadFactor = 0.8;
     this.capacity = 16;
-    this.bucket = new Array(this.capacity);
+    this.buckets = new Array(this.capacity);
   }
 
   addLinkedList(key, value) {
@@ -41,7 +41,7 @@ export class HashMap {
   }
 
   toString(hash) {
-    let list = this.bucket[hash - 1];
+    let list = this.buckets[hash - 1];
 
     let current = list.head;
     let totalStr = "";
@@ -57,10 +57,8 @@ export class HashMap {
 
   /********************/
 
-  // Need to revisit 'set' to double capacity when we reach load factor
-
   findKey(key, hash) {
-    const targetBucket = this.bucket[hash - 1];
+    const targetBucket = this.buckets[hash - 1];
 
     if (targetBucket === undefined) return null;
 
@@ -73,13 +71,24 @@ export class HashMap {
     return current;
   }
 
+  /********************/
+
+  /*
+  Pseudocode for Load Capacity:
+  - Upon setting a new value, check the capacity first.
+  - Do this by multiplying 'capacity * loadFactor'
+  - Check the array to for item amount
+  - If there are more entries in the array than the product of 'capacity * loadFactor',
+  double the size of the array
+  */
+
   set(key, value) {
     const hash = this.hash(key);
-    let bucket = this.bucket[hash - 1];
+    let bucket = this.buckets[hash - 1];
 
     if (bucket === undefined) {
       const newList = this.addLinkedList(key, value);
-      this.bucket[hash - 1] = newList;
+      this.buckets[hash - 1] = newList;
     } else if (bucket !== undefined) {
       const current = this.findKey(key, hash);
 
@@ -95,7 +104,6 @@ export class HashMap {
 
         current.nextNode = node;
         bucket.tail = node;
-        // this.toString(hash);
       }
     }
   }
@@ -124,7 +132,7 @@ export class HashMap {
 
   remove(key) {
     const currentHash = this.hash(key);
-    let targetBucket = this.bucket[currentHash - 1];
+    let targetBucket = this.buckets[currentHash - 1];
     if (targetBucket === undefined) return false;
 
     let current = targetBucket.head;
@@ -139,7 +147,7 @@ export class HashMap {
       return false;
     } else if (prev === null && current.nextNode === null) {
       current = prev;
-      this.bucket[currentHash - 1] = undefined;
+      this.buckets[currentHash - 1] = undefined;
       return true;
     } else if (prev === null && current.nextNode !== null) {
       current = current.nextNode;
@@ -160,7 +168,7 @@ export class HashMap {
 
   length() {
     let numberOfKeys = 0;
-    this.bucket.forEach((index) => {
+    this.buckets.forEach((index) => {
       let current = index.head;
 
       while (current !== null) {
@@ -175,7 +183,7 @@ export class HashMap {
   /********************/
 
   clear() {
-    const arr = this.bucket;
+    const arr = this.buckets;
 
     for (let i = 0; i < arr.length; i++) {
       if (arr[i] !== undefined) {
@@ -189,7 +197,7 @@ export class HashMap {
   keys() {
     const arr = [];
 
-    this.bucket.forEach((index) => {
+    this.buckets.forEach((index) => {
       let current = index.head;
 
       while (current !== null) {
@@ -206,7 +214,7 @@ export class HashMap {
   values() {
     const arr = [];
 
-    this.bucket.forEach((index) => {
+    this.buckets.forEach((index) => {
       let current = index.head;
 
       while (current !== null) {
@@ -223,7 +231,7 @@ export class HashMap {
   entries() {
     const arr = [];
 
-    this.bucket.forEach((index) => {
+    this.buckets.forEach((index) => {
       let current = index.head;
 
       while (current !== null) {
