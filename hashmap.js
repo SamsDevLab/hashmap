@@ -171,6 +171,18 @@ export class HashMap {
 
     return numberOfKeys;
   }
+
+  /********************/
+
+  clear() {
+    const arr = this.bucket;
+
+    for (let i = 0; i < arr.length; i++) {
+      if (arr[i] !== undefined) {
+        arr[i] = undefined;
+      }
+    }
+  }
 }
 
 class LinkedList {
