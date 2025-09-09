@@ -37,22 +37,39 @@ export class HashMap {
       hashCode = hashCode % this.capacity;
     }
 
-    return hashCode % this.capacity;
+    return hashCode;
   }
 
-  toString(hash) {
-    let list = this.buckets[hash - 1];
+  // toString(hash) {
+  //   let list = this.buckets[hash - 1];
 
-    let current = list.head;
-    let totalStr = "";
+  //   let current = list.head;
+  //   let totalStr = "";
 
-    while (current !== null) {
-      totalStr += `( ${current.key} ) -> `;
-      current = current.nextNode;
+  //   while (current !== null) {
+  //     totalStr += `( ${current.key} ) -> `;
+  //     current = current.nextNode;
+  //   }
+
+  //   totalStr += "null";
+  //   console.log(totalStr);
+  // }
+
+  /********************/
+
+  checkCapacity() {
+    const totalStoredPairs = this.length();
+    const totalCapacity = this.loadFactor * this.capacity;
+
+    if (totalStoredPairs > totalCapacity) {
+      this.capacity = this.capacity * 2;
+      const allEntriesArr = this.entries();
+      this.buckets = new Array(this.capacity);
+
+      allEntriesArr.forEach((bucket) => {
+        this.set(bucket[0], bucket[1]);
+      });
     }
-
-    totalStr += "null";
-    console.log(totalStr);
   }
 
   /********************/
@@ -72,15 +89,6 @@ export class HashMap {
   }
 
   /********************/
-
-  /*
-  Pseudocode for Load Capacity:
-  - Upon setting a new value, check the capacity first.
-  - Do this by multiplying 'capacity * loadFactor'
-  - Check the array to for item amount
-  - If there are more entries in the array than the product of 'capacity * loadFactor',
-  double the size of the array
-  */
 
   set(key, value) {
     const hash = this.hash(key);
@@ -106,6 +114,7 @@ export class HashMap {
         bucket.tail = node;
       }
     }
+    this.checkCapacity();
   }
 
   /********************/
