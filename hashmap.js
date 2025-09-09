@@ -57,8 +57,13 @@ export class HashMap {
 
   /********************/
 
+  // Need to revisit set to double capacity when we reach load factor
+
   findKey(key, hash) {
     const targetBucket = this.bucket[hash - 1];
+
+    if (targetBucket === undefined) return null;
+
     let current = targetBucket.head;
 
     while (current !== null && key !== current.key) {
@@ -90,9 +95,19 @@ export class HashMap {
 
         current.nextNode = node;
         bucket.tail = node;
-        this.toString(hash);
+        // this.toString(hash);
       }
     }
+  }
+
+  /********************/
+
+  get(key) {
+    const currentHash = this.hash(key);
+    const currentKey = this.findKey(key, currentHash);
+
+    if (currentKey === null) return null;
+    else return currentKey.value;
   }
 }
 
