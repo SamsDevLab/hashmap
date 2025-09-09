@@ -217,6 +217,25 @@ export class HashMap {
 
     return arr;
   }
+
+  /********************/
+
+  entries() {
+    const arr = [];
+
+    this.bucket.forEach((index) => {
+      let current = index.head;
+
+      while (current !== null) {
+        const miniArr = [];
+        miniArr.push(current.key, current.value);
+        current = current.nextNode;
+        arr.push(miniArr);
+      }
+    });
+
+    return arr;
+  }
 }
 
 class LinkedList {
