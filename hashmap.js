@@ -57,7 +57,7 @@ export class HashMap {
 
   /********************/
 
-  // Need to revisit set to double capacity when we reach load factor
+  // Need to revisit 'set' to double capacity when we reach load factor
 
   findKey(key, hash) {
     const targetBucket = this.bucket[hash - 1];
@@ -108,6 +108,23 @@ export class HashMap {
 
     if (currentKey === null) return null;
     else return currentKey.value;
+  }
+
+  /********************/
+
+  /*
+  • Hash key then pass key and hash into 'findKey'
+  • Set 'findKey' to 'current' variable
+  • If current !== null, return true (meaning key is in the hash map)
+  • if current === null, return false (meaning key is NOT in the hash map)
+  */
+
+  has(key) {
+    const currentHash = this.hash(key);
+    const currentNode = this.findKey(key, currentHash);
+
+    if (currentNode !== null) return true;
+    else return false;
   }
 }
 
