@@ -155,6 +155,22 @@ export class HashMap {
       return true;
     }
   }
+
+  /********************/
+
+  length() {
+    let numberOfKeys = 0;
+    this.bucket.forEach((index) => {
+      let current = index.head;
+
+      while (current !== null) {
+        current = current.nextNode;
+        numberOfKeys += 1;
+      }
+    });
+
+    return numberOfKeys;
+  }
 }
 
 class LinkedList {
