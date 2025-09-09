@@ -40,21 +40,6 @@ export class HashMap {
     return hashCode;
   }
 
-  // toString(hash) {
-  //   let list = this.buckets[hash - 1];
-
-  //   let current = list.head;
-  //   let totalStr = "";
-
-  //   while (current !== null) {
-  //     totalStr += `( ${current.key} ) -> `;
-  //     current = current.nextNode;
-  //   }
-
-  //   totalStr += "null";
-  //   console.log(totalStr);
-  // }
-
   /********************/
 
   checkCapacity() {
