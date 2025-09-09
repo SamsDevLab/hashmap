@@ -186,15 +186,6 @@ export class HashMap {
 
   /********************/
 
-  /*
-  Pseudocode:
-  - Create an array to store all of the keys
-  - Use forEach on this.bucket to access all populated indices
-  - Traverse linked lists to find keys
-  - Once a key is found, push to the new arr.
-  - Return the array
-  */
-
   keys() {
     const arr = [];
 
@@ -203,6 +194,23 @@ export class HashMap {
 
       while (current !== null) {
         arr.push(current.key);
+        current = current.nextNode;
+      }
+    });
+
+    return arr;
+  }
+
+  /********************/
+
+  values() {
+    const arr = [];
+
+    this.bucket.forEach((index) => {
+      let current = index.head;
+
+      while (current !== null) {
+        arr.push(current.value);
         current = current.nextNode;
       }
     });
