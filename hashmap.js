@@ -277,6 +277,23 @@ export class HashSet extends HashMap {
 
   /********************/
 
+  checkCapacity() {
+    const totalKeys = this.length();
+    const totalCapacity = this.loadFactor * this.capacity;
+
+    if (totalKeys > totalCapacity) {
+      this.capacity = this.capacity * 2;
+      const allKeys = this.keys();
+      this.buckets = new Array(this.capacity);
+
+      allKeys.forEach((key) => {
+        this.set(key);
+      });
+    }
+  }
+
+  /********************/
+
   set(key) {
     const hash = this.hash(key);
     let bucket = this.buckets[hash - 1];
