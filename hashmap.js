@@ -25,7 +25,7 @@ export class HashMap {
 
     const nextNode = node.nextNode;
 
-    return { key, value, nextNode };
+    return node;
   }
 
   hash(key) {
@@ -253,25 +253,21 @@ class Node {
   nextNode = null;
 }
 
-// Start here tomorrow. Need to write look at making a HashSet class (extra credit) &
-// writing a README file. After that, this project will be FINISHED
-
 export class HashSet extends HashMap {
   addNewNode(key) {
-    //addNewNode(key, value)
     const node = new setNode();
     node.key = key;
 
     const nextNode = node.nextNode;
 
-    return { key, nextNode }; //return { key, value, nextNode };
+    return node;
   }
 
-  addLinkedList(key) {
-    // addLinkedList(key, value);
-    const list = new LinkedList();
+  /********************/
 
-    const node = this.addNewNode(key); // this.addNewNode(key, value)
+  addLinkedList(key) {
+    const list = new LinkedList();
+    const node = this.addNewNode(key);
 
     list.head = node;
     list.tail = node;
@@ -279,21 +275,22 @@ export class HashSet extends HashMap {
     return list;
   }
 
+  /********************/
+
   set(key) {
-    //set(key, value)
     const hash = this.hash(key);
     let bucket = this.buckets[hash - 1];
 
     if (bucket === undefined) {
-      const newList = this.addLinkedList(key); // this.addLinkedList(key, value)
+      const newList = this.addLinkedList(key);
       this.buckets[hash - 1] = newList;
     } else if (bucket !== undefined) {
       const current = this.findKey(key, hash);
 
       if (current !== null) {
-        current.key = key; // current.value = value;
+        current.key = key;
       } else {
-        const node = this.addNewNode(key); //this.addNewNode(key, value)
+        const node = this.addNewNode(key);
         let current = bucket.head;
 
         while (current.nextNode !== null) {
@@ -305,6 +302,24 @@ export class HashSet extends HashMap {
       }
     }
     this.checkCapacity();
+  }
+
+  /********************/
+
+  get(key) {
+    return new Error("HashSet does not contain values");
+  }
+
+  /********************/
+
+  values() {
+    return new Error("HashSet does not contain values");
+  }
+
+  /********************/
+
+  entries() {
+    return new Error("HashSet does not contain key/value pairs");
   }
 }
 
