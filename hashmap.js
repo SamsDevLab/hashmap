@@ -252,3 +252,63 @@ class Node {
   value = null;
   nextNode = null;
 }
+
+// Start here tomorrow. Need to write look at making a HashSet class (extra credit) &
+// writing a README file. After that, this project will be FINISHED
+
+export class HashSet extends HashMap {
+  addNewNode(key) {
+    //addNewNode(key, value)
+    const node = new setNode();
+    node.key = key;
+
+    const nextNode = node.nextNode;
+
+    return { key, nextNode }; //return { key, value, nextNode };
+  }
+
+  addLinkedList(key) {
+    // addLinkedList(key, value);
+    const list = new LinkedList();
+
+    const node = this.addNewNode(key); // this.addNewNode(key, value)
+
+    list.head = node;
+    list.tail = node;
+
+    return list;
+  }
+
+  set(key) {
+    //set(key, value)
+    const hash = this.hash(key);
+    let bucket = this.buckets[hash - 1];
+
+    if (bucket === undefined) {
+      const newList = this.addLinkedList(key); // this.addLinkedList(key, value)
+      this.buckets[hash - 1] = newList;
+    } else if (bucket !== undefined) {
+      const current = this.findKey(key, hash);
+
+      if (current !== null) {
+        current.key = key; // current.value = value;
+      } else {
+        const node = this.addNewNode(key); //this.addNewNode(key, value)
+        let current = bucket.head;
+
+        while (current.nextNode !== null) {
+          current = current.nextNode;
+        }
+
+        current.nextNode = node;
+        bucket.tail = node;
+      }
+    }
+    this.checkCapacity();
+  }
+}
+
+class setNode {
+  key = null;
+  nextNode = null;
+}
